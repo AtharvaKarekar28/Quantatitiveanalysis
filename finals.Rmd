@@ -1,0 +1,227 @@
+---
+title: "QDS-Data exploration and cleaning"
+Name: "Atharva Karekar"
+date: "2025-04-30"
+output:
+  pdf_document:
+    latex_engine: xelatex
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Uploading a Dataset in R.
+```{r}
+#Loading the libraries which we will be using for the data processing.
+library(tidyr)
+library(BayesFactor)
+library(tidyverse)
+#Loading the dataset in R.
+mht = read_csv("C:/Users/athar/OneDrive/Desktop/coursework/quantatitive reasoning/mht.csv")
+#Displaying the first 5 rows to show the data.
+head(mht)
+```
+```{r}
+#exploring the data summary and structure.
+summary(mht)
+str(mht)
+```
+```{r}
+# Converting character columns to factors so it will be easy for further analysis .
+
+mht1 <- mht %>%
+  mutate(
+    Gender = as.factor(Gender),
+    Mental_Health_Status = as.factor(Mental_Health_Status),
+    Stress_Level = as.factor(Stress_Level),
+    Support_Systems_Access = as.factor(Support_Systems_Access),
+    Work_Environment_Impact = as.factor(Work_Environment_Impact),
+    Online_Support_Usage = as.factor(Online_Support_Usage)
+  )
+```
+
+```{r}
+#Checking for any missing values and resolving them.
+colSums(is.na(mht1))
+```
+
+# The Research Question according to the dataset and the Frequentist and Bayesian inferential statistics performed and models used to answer those questions 
+```{r}
+#Does more social media use relate to poorer mental health?
+ggplot(mht1, aes(x = Mental_Health_Status, y = Social_Media_Usage_Hours)) +
+  geom_boxplot() +
+  labs(title = "Social Media Use by Mental Health Status")
+```
+
+#The following diagram Shows us social media usage in hours across diff self reported menatal health statuses uch as excellent, good, fair,poor. We can see the plot reflects roughly same use of social media across all the groups. The spread is similar across categories, suggesting no strong difference in usage on mental health.This implies theat social media alone is not a clear predictor of reported mental health.
+
+```{r}
+#Does more social media use relate to poorer mental health?
+
+#frequentist anova:
+anova_result <- aov(Social_Media_Usage_Hours ~ Mental_Health_Status, data = mht1)
+summary(anova_result)
+
+#Bayesian anova
+anovaBF(Social_Media_Usage_Hours ~ Mental_Health_Status, data = mht1)
+```
+#Frequentist anova : The p-value > 0.05, this means the difference in average social media usage between mental health groups is not statistically significant, So we can say we cannot conclude that mental health status impacts social meadia usage.
+
+#Bayesian anova: The bayesfactor = 0.00034 
+#This is extremely low, meaning the data strongly support the null model, It shows an overwhelming evidence against an effect of mental health statuson social media use.
+
+#We can conclude that mental health is not associated with the amount of time someone spends on social media.
+
+
+```{r}
+#using multinominal logistic regression model for the same question. 
+
+library(nnet)
+multi_logit <- multinom(Mental_Health_Status ~ Social_Media_Usage_Hours, data = mht1)
+summary(multi_logit)
+```
+#The coefficients for Social_Media_Usage_Hours are positive across all mental health categories (Fair, Good, Poor), suggesting that higher social media usage is very slightly associated with increased odds of being in a lower mental health category (vs. Excellent). All the effects are very small and no coefficients are statistically significant. While the direction of the relationship suggests that more usage may slightly increase the odds of reporting poorer mental health (compared to “Excellent”), the effect sizes are small, and likely not statistically meaningful.
+
+
+```{r}
+#Is screen time related to stress level?
+ggplot(mht1, aes(x = Stress_Level, y = Screen_Time_Hours)) +
+  geom_boxplot() +
+  labs(title = "Screen Time by Stress Level")
+
+```
+
+#The following plot compares total daily screen time across three levels of reported stress such as low, medium, high. The median screen time is mostly same across all the stress levels, However higher stress level shows a slightly wider range, indicating more variablility in screen time among stressed individuals. This plot suggest that even though screen time may not dramatically differ with stress level, some high-stress user may be outliers with extreme screen time.
+
+```{r}
+#Is screen Time related to stress level ?
+
+#frequentist anova:
+
+anova_screen <- aov(Screen_Time_Hours ~ Stress_Level, data = mht1)
+summary(anova_screen)
+
+
+#Bayesian anova :
+anovaBF(Screen_Time_Hours ~ Stress_Level, data = mht1)
+
+```
+#Frequentist anova : A one-way ANOVA was conducted to examine whether screen time significantly differed across stress levels (Low, Medium, High). The results showed no statistically significant difference. Since the p-value is well above the conventional 0.05 threshold, we fail to reject the null hypothesis. This suggests that, in this dataset, self-reported stress level is not significantly associated with differences in average screen time.
+
+#Bayesian anova : A Bayesian ANOVA was performed to compare models predicting screen time based on stress level versus an intercept-only (null) model. The resulting Bayes Factor (BF₁₀) was 0.0059, which provides strong evidence in favor of the null model. This means the data are nearly 170 times more likely under the assumption that screen time is not influenced by stress level, reinforcing the conclusion that no meaningful relationship exists between these variables in the current dataset.
+
+```{r}
+#Using ordinal logistic model:
+
+library(MASS)
+ord_model <- polr(Stress_Level ~ Screen_Time_Hours, data = mht1, Hess = TRUE)
+summary(ord_model)
+
+```
+#We get an estimate of 0.0005873, std.error of 0.004534 and the t-value of 0.1295, The coefficient is very clode to 0 and not statistically significant, This means that the screen time does not predict changes in stress level in this model, a one hour increase in screen time results in only a 0.06% increse in the odds of being in a higher stress category.This estimates that scren time is not a good predictor of weather someone experiences low, medium or high stress in the dataset.
+
+
+
+```{r}
+#Is there a relationship between technology usage hours and sleep duration??
+
+
+mht1 <- mht1 %>%
+  mutate(Tech_Usage_Bin = cut(Technology_Usage_Hours, breaks = 10))
+
+avg_sleep_by_tech <- mht1 %>%
+  group_by(Tech_Usage_Bin) %>%
+  summarise(Avg_Sleep = mean(Sleep_Hours, na.rm = TRUE))
+
+ggplot(avg_sleep_by_tech, aes(x = Tech_Usage_Bin, y = Avg_Sleep, group = 1)) +
+  geom_line(color = "orange") +
+  geom_point() +
+  labs(title = "Average Sleep Hours by Technology Usage",
+       x = "Technology Usage (Binned Hours)",
+       y = "Average Sleep Hours") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+```
+#Theline chart shows the relationship  between binned technology usage hours and avg sleep duration. The plot shows that individuals who use fewer hours o technology tend to sleep more than the one who uses high hours of technology.Although the differences are small, this suggests that higher technology use may be associated with reduced sleep, potentially due to time displacement or mental overstimulation before bedtime. 
+
+
+```{r}
+#Is there a relationship between technology usage hours and sleep duration?
+
+#Frequentist anova: 
+anova_model <- aov(Sleep_Hours ~ Tech_Usage_Bin, data = mht1)
+summary(anova_model)
+
+#Bayesian anova:
+anovaBF(Sleep_Hours ~ Tech_Usage_Bin, data = mht1)
+
+```
+#Frequentist ANOVA: A one-way ANOVA was conducted to examine whether average sleep duration differs across levels of binned technology usage. The analysis showed no statistically significant difference. This high p-value suggests that individuals in different technology usage categories (from lowest to highest usage) do not show meaningful differences in their average sleep hours. Thus, we fail to reject the null hypothesis and conclude that technology usage is not significantly associated with sleep duration based on this grouped comparison.
+
+#Bayesian ANOVA Interpretation: The Bayesian ANOVA yielded a Bayes Factor (BF₁₀) of approximately 2.9e-08, indicating overwhelming support for the null model over the alternative. In Bayesian terms, the data provide extremely strong evidence against any differences in sleep duration across technology usage levels. This reinforces the frequentist conclusion that technology usage does not appear to impact sleep hours in this sample when grouped into categories.
+
+
+```{r}
+#Linear model for Is there a relationship between technology usage hours and sleep duration?
+lm_model <- lm(Sleep_Hours ~ Technology_Usage_Hours, data = mht1)
+summary(lm_model)
+
+
+```
+
+#The slope coefficients for technology_Usage _Hours is -0.0045, indicating that for each additional hour technology use, sleep hours decrease by just 0.0045 hours. this effect is not statistically significant. The R-squared value is extremely low which is 0.000096 indicating which haas no predictive power at all.The effect size is negligible, not statistically significant, and the model explains almost none of the variation in sleep duration.
+
+```{r}
+# Plot for Is heavy social media usage associated with reduced physical activity? 
+
+library(dplyr)
+
+# Bin social media usage
+data_binned <- mht1 %>%
+  mutate(SM_Bin = cut(Social_Media_Usage_Hours, breaks = 10)) %>%
+  group_by(SM_Bin) %>%
+  summarise(Avg_Physical = mean(Physical_Activity_Hours, na.rm = TRUE))
+
+# Plot
+ggplot(data_binned, aes(x = SM_Bin, y = Avg_Physical, group = 1)) +
+  geom_line(color = "blue") +
+  geom_point() +
+  labs(title = "Average Physical Activity by Binned Social Media Usage",
+       x = "Social Media Usage (Binned)", y = "Average Physical Activity") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+```{r}
+
+library(BayesFactor)
+
+bf_result <- correlationBF(mht1$Social_Media_Usage_Hours, mht1$Physical_Activity_Hours)
+bf_result
+
+```
+#The Bayesian correlation analysis produced a Bayes Factor of BF₁₀ = 0.024, indicating strong evidence in favor of the null hypothesis. In other words, the observed data are approximately 42 times more likely under the assumption that there is no correlation between social media usage and physical activity. This result reinforces the conclusion from the frequentist model, suggesting that social media usage is not meaningfully associated with physical activity levels in this dataset.
+
+
+```{r}
+#Linear regression for Is heavy social media usage associated with reduced physical activity?
+
+lm_model <- lm(Physical_Activity_Hours ~ Social_Media_Usage_Hours, data = mht1)
+summary(lm_model)
+
+```
+#A simple linear regression was conducted to examine whether social media usage is associated with physical activity hours per day. The results showed no statistically significant relationship between the two variables, β = 0.0029, t(9998) = 0.23, p = 0.816. The model’s R² value was virtually zero (R² = 0.0000054), indicating that social media use explains almost none of the variation in physical activity. In short, the data do not support the idea that heavier social media usage predicts lower physical activity levels.
+
+
+
+```{r}
+#Saving the cleaned data
+write_csv(mht1 , "cleaned_mental_health_data.csv")
+```
+
+
+
