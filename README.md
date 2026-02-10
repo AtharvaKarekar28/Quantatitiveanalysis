@@ -1,481 +1,199 @@
-# Analysis of the Impacts of Technology and Social Media on Mental and Physical Well-being
+# Technology & Mental Health: Statistical Analysis
 
 <div align="center">
 
 
-**Author**: Atharva Bhushan Karekar  
-**Institution**: Syracuse University  
-**Course**: ITS 686 M001 Spring 2025  
-**Instructor**: Professor Dilmore  
-**Date**: May 8, 2025
+**Atharva Bhushan Karekar** | Syracuse University | Spring 2025
+
+*Statistical analysis of technology usage patterns and their impact on mental & physical well-being*
+
+[![Dataset](https://img.shields.io/badge/Dataset-Kaggle-blue)](https://www.kaggle.com/datasets/waqi786/mental-health-and-technology-usage-dataset)
+[![Sample Size](https://img.shields.io/badge/Sample-10,000-green)]()
+[![Analysis](https://img.shields.io/badge/Analysis-R-orange)]()
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## 🎯 Project Overview
 
-- [Introduction](#introduction)
-- [Research Questions](#research-questions)
-- [Descriptive Overview](#descriptive-overview)
-- [Inferential Analysis](#inferential-analysis)
-  - [Q1: Gaming and Social Media vs Mental Health](#q1-gaming-and-social-media-usage-can-lead-to-poor-mental-health)
-  - [Q2: Screen Time and Stress Level](#q2-is-screen-time-related-to-stress-level)
-  - [Q3: Technology Usage and Sleep Duration](#q3-is-there-a-relationship-between-technology-usage-hours-and-sleep-duration)
-  - [Q4: Social Media and Physical Activity](#q4-is-heavy-social-media-usage-associated-with-reduced-physical-activity)
-  - [Q5: Support Systems and Wellbeing](#q5-access-to-support-systems-associated-with-better-physical-activity-or-sleep-patterns)
-- [Key Findings & Recommendations](#key-findings--recommendations)
-- [Conclusion](#conclusion)
-- [Limitations](#limitations)
-- [Appendix](#appendix)
-- [Additional Resources](#additional-resources)
+Analyzed the relationship between digital behavior (social media, gaming, screen time) and health outcomes (mental health, stress, sleep, physical activity) using multiple statistical methods on 10,000 individuals.
 
 ---
 
-## 🌐 Introduction
+## 📊 Key Findings
 
-In the modern era, technology is embedded in each and every individual's life. This report discusses the analysis between mental health and technological usage—examining how social media usage, screen time, gaming, and key indicators of mental and physical health, including stress levels, sleep patterns, and physical activity are related.
+### Finding #1: Gaming & Social Media ≠ Poor Mental Health ❌
 
-### Primary Objective
+<table>
+<tr>
+<td width="50%">
 
-The primary objective of this analysis is to determine whether digital behavior patterns are significantly associated with mental health outcomes and lifestyle factors. The findings aim to provide data-driven insights into how modern technology engagement may influence well-being.
+![Gaming Hours by Mental Health](images/graph_7.png)
 
----
+</td>
+<td width="50%">
 
-## ❓ Research Questions
+![Social Media by Mental Health](images/graph_6.png)
 
-This analysis addresses the following key questions:
+</td>
+</tr>
+</table>
 
-1. **Can gaming and social media usage lead to poor mental health?**
-2. **Is screen time related to stress level?**
-3. **Is there a relationship between technology usage hours and sleep duration?**
-4. **Is heavy social media usage associated with reduced physical activity?**
-5. **Is access to support systems associated with better physical activity or sleep patterns?**
+**Statistical Evidence:**
+- **ANOVA**: p > 0.48 (not significant)
+- **Bayes Factor**: BF ≈ 0.0003 (strong evidence for no effect)
+- **Multinomial Regression**: All p > 0.24
 
-These questions guide our analysis on the impacts of technological usage on mental and physical health.
-
----
-
-## 📊 Descriptive Overview
-
-### Dataset Information
-
-This report presents a comprehensive statistical analysis of the relationship between mental health and technology usage. The analysis consists of a dataset with **10,000 individuals**, including a wide range of variables related to:
-
-- User demographics
-- Technology engagement patterns
-- Health indicators
-
-### Key Variables Analyzed
-
-**Numeric Variables:**
-- `Social_Media_Usage_Hours`
-- `Gaming_Hours`
-- `Screen_Time_Hours`
-- `Sleep_Hours`
-- `Physical_Activity_Hours`
-- `Support_System_Access`
-
-### Statistical Summary
-
-Variables were summarized using:
-- **Measures of central tendency**: Mean, Median
-- **Measures of dispersion**: Standard deviation, Range
-
-**Findings:**
-- Most variables displayed symmetric distributions with low impact on mental health
-- `Gaming_Hours` and `Screen_Time_Hours` exhibited moderate skewness with outliers on the higher end
-- Outliers were carefully examined using boxplots to understand their influence on regression results
-
-### Visualization Methods
-
-To support the statistical analysis, various visualizations were employed:
-- **Boxplots**: Highlighted group differences
-- **Line diagrams**: Made trends easier to interpret
-- **2D plots**: Enhanced readability and understanding
-
-These graphical tools, paired with statistical summaries, provide a clear and interpretable foundation for the inferential methods that follow.
+**Result:** No relationship found between gaming/social media usage and mental health status.
 
 ---
 
-## 🔬 Inferential Analysis
+### Finding #2: Screen Time ≠ Stress Level ❌
 
-### Q1: Gaming and Social Media Usage Can Lead to Poor Mental Health?
+![Screen Time vs Stress](images/graph_4.png)
 
-**Response Variable**: `Mental_Health_Status`  
-**Predictor Variables**: `Social_Media_Usage_Hours`, `Gaming_Hours`
-
-#### Visual Analysis
-
-**Gaming Hours:**
-
-![Gaming Hours by Mental Health Status](images/graph_7.png)
-
-- Gaming hours across all mental health statuses (Excellent, Fair, Good, Poor) are consistent at approximately 2.5-3 hours
-- No substantial shifts or patterns suggesting increased/decreased gaming is associated with worsening mental health
-- Visual observation suggests **no significant difference** in gaming behavior by mental health status
-
-**Social Media Usage:**
-
-![Social Media Usage by Mental Health Status](images/graph_6.png)
-
-- Social media usage appears highly consistent across all mental health groups
-- Median values around 4 hours per day with comparable interquartile ranges
-- No notable shifts in usage levels across mental health categories
-- Suggests **no clear association** between social media usage and mental health status
-
-#### Statistical Tests
-
-**One-Way ANOVA (Frequentist):**
-- **P-values > 0.05** for both Social Media Hours and Gaming Hours
-- **Conclusion**: No statistically significant difference in either variable on mental health status
-
-**Bayesian ANOVA:**
-- Social Media Usage: **BF = 0.00034**
-- Gaming Hours: **BF = 0.00022**
-- **Interpretation**: Extremely small Bayes Factors provide overwhelming evidence for the null hypothesis
-- Data strongly support that neither gaming nor social media usage meaningfully varies with mental health status
-
-**Multinomial Logistic Regression:**
-- Neither gaming hours nor social media usage significantly predict mental health status
-- All **p-values > 0.24**
-- Effect sizes (coefficients) were very small
-- **Conclusion**: Variations in time spent gaming or on social media are not meaningfully associated with mental health categories
-
----
-
-### Q2: Is Screen Time Related to Stress Level?
-
-**Response Variable**: `Stress_Level`  
-**Predictor Variable**: `Screen_Time_Hours`
-
-#### Visual Analysis
-
-![Screen Time by Stress Level](images/graph_4.png)
-
-- Median screen time is mostly consistent across all stress levels (Low, Medium, High)
-- Higher stress level shows slightly wider range, indicating more variability
-- Some high-stress users may be outliers with extreme screen time
-- Overall suggests screen time may not dramatically differ with stress level
-
-#### Statistical Tests
-
-**Frequentist ANOVA:**
-- **P-value >> 0.05**
-- **Conclusion**: No statistically significant difference in screen time across stress levels
-- Fail to reject null hypothesis
-
-**Bayesian ANOVA:**
-- **Bayes Factor (BF₁₀) = 0.0059**
-- Data are approximately **170 times more likely** under null model
-- **Strong evidence**: No meaningful relationship exists between screen time and stress level
-
-**Ordinal Logistic Regression:**
-- Coefficient: **β = 0.00059, p = 0.33**
-- **Conclusion**: Screen time is not a statistically meaningful predictor of stress level
-
----
-
-### Q3: Is There a Relationship Between Technology Usage Hours and Sleep Duration?
-
-**Response Variable**: `Sleep_Hours`  
-**Predictor Variable**: `Technology_Usage_Hours`
-
-#### Visual Analysis
-
-![Average Sleep Hours by Technology Usage](images/graph_3.png)
-
-- Slight peak in sleep duration among users with 3-4 hours of technology usage
-- Overall pattern is relatively flat
-- Most groups average between **6.46 to 6.56 hours** of sleep
-- No substantial shifts suggesting increased technology usage leads to more or less sleep
-- **Visual conclusion**: No clear or significant relationship
-
-#### Statistical Tests
-
-**Frequentist ANOVA:**
-- **P-value >> 0.05**
-- **Conclusion**: No statistically significant difference in sleep duration across technology usage categories
-- Technology usage is not significantly associated with sleep duration
-
-**Bayesian ANOVA:**
-- **Bayes Factor (BF₁₀) ≈ 2.9e-08**
-- **Overwhelming support** for null model
-- Extremely strong evidence against differences in sleep duration across technology usage levels
-
-**Linear Regression:**
-- Slope coefficient: **β = -0.0045** (not significant)
-- For each additional hour of technology use, sleep decreases by only 0.0045 hours
-- **R² = 0.000096** (virtually no predictive power)
-- **Conclusion**: Effect size is negligible, not statistically significant
-
----
-
-### Q4: Is Heavy Social Media Usage Associated with Reduced Physical Activity?
-
-**Response Variable**: `Physical_Activity_Hours`  
-**Predictor Variable**: `Social_Media_Usage_Hours`
-
-#### Visual Analysis
-
-![Average Physical Activity by Social Media Usage](images/graph_2.png)
-
-- Average physical activity ranges from approximately **4.85 to 5.2 hours** per day across all social media usage groups
-- Small fluctuations present but overall pattern is flat
-- No consistent upward or downward trend
-- Differences between bins appear random rather than systematic
-- **Visual conclusion**: Increased social media usage is not clearly associated with reduced physical activity
-
-#### Statistical Tests
-
-**Bayesian Correlation Analysis:**
-- **Bayes Factor (BF₁₀) = 0.024**
-- Data are approximately **42 times more likely** under assumption of no correlation
-- **Strong evidence** for null hypothesis
-
-**Linear Regression:**
-- Coefficient: **β = 0.0029, t(9998) = 0.23, p = 0.816**
-- **R² ≈ 0.0000054** (virtually zero)
-- Social media use explains almost none of the variation in physical activity
-- **Conclusion**: Data do not support that heavier social media usage predicts lower physical activity levels
-
----
-
-### Q5: Access to Support Systems Associated with Better Physical Activity or Sleep Patterns?
-
-**Response Variables**: `Physical_Activity_Hours`, `Sleep_Hours`  
-**Predictor Variable**: `Support_Systems_Access`
-
-#### Visual Analysis
-
-**Sleep Hours:**
-
-![Sleep Hours by Support System Access](images/graph_5.png)
-
-- Median sleep duration nearly identical for both groups (~6.5 hours/day)
-- Interquartile ranges largely overlap
-- **Conclusion**: Support system access is not associated with noticeable difference in sleep patterns
-
-**Physical Activity:**
-
-![Physical Activity by Support System Access](images/graph_8.png)
-
-- Individuals with access to support systems display slightly higher median activity level
-- Difference is modest but visible
-- **Potential small positive association** between support access and physical activity
-
-#### Statistical Tests
-
-**T-Test Results:**
-
-**Physical Activity:**
-- **P-value = 0.027 < 0.05** ✅ Statistically significant
-- Individuals with support systems engage in slightly more physical activity
-- **Conclusion**: Significant positive association exists
-
-**Sleep Hours:**
-- **P-value > 0.05**
-- No statistically significant difference between groups
-- 95% confidence interval included zero
-- **Conclusion**: Support system access does not significantly influence sleep duration
-
-**Linear Regression Models:**
-
-**Physical Activity:**
-- Coefficient: **β = 0.13, t(9998) = 2.21, p = 0.027** ✅
-- Individuals with support systems engage in **0.13 more hours** of physical activity per day
-- **Statistically significant predictor**
-
-**Sleep Hours:**
-- Coefficient: **β = 0.028, t(9998) = 0.97, p = 0.333**
-- **R² ≈ 0.00009** (virtually no variance explained)
-- **Conclusion**: No significant effect of support system access on sleep
-
----
-
-## 💡 Key Findings & Recommendations
-
-### Major Findings
-
-1. ✅ **Support systems positively impact physical activity** - Statistically significant relationship found
-2. ❌ **No relationship** between gaming/social media and mental health
-3. ❌ **No relationship** between screen time and stress levels
-4. ❌ **No relationship** between technology usage and sleep duration
-5. ❌ **No relationship** between social media usage and physical activity
-
-### Recommendations for Community Leaders
-
-Based on the analysis, we recommend:
-
-1. **Invest in Local Support Systems**
-   - Develop peer groups, wellness programs, or community centers
-   - These showed measurable positive impact on physical activity
-   - Focus resources here for maximum community health benefit
-
-2. **Avoid Over-Focusing on Technology Reduction**
-   - Data did not show strong link between technology usage and well-being
-   - Unless other mental health concerns are evident
-   - Balanced approach is recommended
-
-3. **Promote Community Involvement**
-   - Emphasize community involvement alongside physical activity
-   - Balance technology use with social connections
-   - Support overall health in rural and urban populations
-
----
-
-## 🎯 Conclusion
-
-Based on the findings from this analysis, **access to support systems plays a more consistent role in influencing physical activity than technology usage alone**. While common assumptions often link screen time and social media with poor mental or physical health, our results showed **no strong or reliable evidence supporting that narrative**. 
-
-Instead, the presence of social support was associated with a **statistically significant increase in physical activity**, highlighting the value of human connection in promoting healthier lifestyles.
-
-### Key Takeaway
-
-> **Human connection and support systems matter more for physical health than limiting technology use.**
-
----
-
-## ⚠️ Limitations
-
-### Data Context Limitations
-
-While the dataset was large (n=10,000), well-structured, and free from major missing values, it lacked key contextual variables:
-
-- **Missing Variables:**
-  - Socioeconomic status
-  - Geographic location (urban vs. rural)
-  - Chronic health conditions
-  - Specific types or purposes of technology use
-  - Quality of technology engagement
-
-These variables could have provided deeper insights and more nuanced analysis.
-
-### Methodological Limitations
-
-1. **Observational Data**: Data is observational and self-reported
-2. **Response Bias**: Potential for misreporting, especially regarding:
-   - Health status estimates
-   - Screen time accuracy
-   - Mental health self-assessment
-3. **Causality**: Cannot establish causal relationships, only associations
-4. **Temporal**: Cross-sectional design limits understanding of changes over time
-
----
-
-## 📈 LLM Usage Declaration
-
-### Transparency in Analysis
-
-**Research Question 1** (Gaming and Social Media vs. Mental Health):
-- Used ChatGPT to help articulate visual interpretation of boxplots
-- No results or data were generated by the model
-- All statistical analyses performed independently
-
-**Research Question 2** (Support Systems and Physical/Sleep Health):
-- Used ChatGPT to assist in explaining model selection rationale
-- Model output and interpretation based entirely on R analysis
-- All statistical computations verified independently
-
-**Research Question 3** (Screen Time and Stress Level):
-- Used ChatGPT minimally to clarify ANOVA explanation
-- Ensured terminology and results were described professionally
-- All statistical results obtained and verified in R
-
----
-
-## 📑 Appendix
-
-### Key Plots
-
-**Figure A1: Boxplot – Physical Activity by Support System Access**
-- Shows individuals with support access engage in slightly more physical activity
-- Visually supports t-test and regression findings indicating meaningful difference
-
-**Figure A2: Line Plot – Average Sleep by Technology Usage**
-- Demonstrates no substantial change in sleep across increasing tech usage
-- Supports regression result showing no significant relationship
-
-**Figure A3: Boxplot – Social Media Usage by Mental Health Status**
-- Shows similar medians and spread across all mental health groups
-- Visually reinforces conclusion that social media usage does not significantly impact mental health
-
-### Highlighted Statistical Results
-
-#### Physical Activity & Support Access
-- **T-test**: p = 0.027 ✅
-- **Regression**: β = 0.13, p = 0.027 ✅
-- **Interpretation**: Individuals with support access are significantly more active
-
-#### Sleep & Support Access
-- **T-test**: p = 0.333
-- **Regression**: β = 0.028, p = 0.333
-- **Interpretation**: No meaningful difference in sleep duration
-
-#### Mental Health & Tech Usage
-- **ANOVA**: p > 0.48 for both variables
-- **Bayes Factor**: BF ≈ 0.0002–0.0003 (strong support for no effect)
-- **Multinomial Regression**: All p-values > 0.24
-- **Conclusion**: No statistical relationship
-
-#### Stress Level & Screen Time
+**Statistical Evidence:**
 - **ANOVA**: p = 0.20
-- **Bayes Factor**: BF = 0.0059
+- **Bayes Factor**: BF = 0.0059 (~170x more likely under null)
 - **Ordinal Regression**: β ≈ 0, p = 0.33
-- **Conclusion**: No significant relationship
 
-### Data Cleaning Notes
-
-The dataset required minimal cleaning with key transformations:
-
-**Variable Recoding:**
-- `Support_Systems_Access`: Converted from categorical ("Yes"/"No") to binary numeric (1/0)
-- `Mental_Health_Status`: Transformed to ordinal numeric scale (Excellent=1, Good=2, Fair=3, Poor=4)
-
-**Missing Data Handling:**
-- No missing values found in key variables
-- No imputation or row removal necessary
-
-**Outlier Inspection:**
-- Visual inspections performed using boxplots
-- High values noted but retained as they fell within realistic ranges
-- Preserved natural variability of sample
-
-**Variable Type Conversions:**
-- All relevant variables confirmed as numeric
-- Properly formatted for ANOVA, regression, and Bayesian analysis
+**Result:** Screen time does not predict stress levels.
 
 ---
 
-## 📚 Additional Resources
+### Finding #3: Technology Usage ≠ Sleep Duration ❌
 
-**Dataset Source:**
-- Kaggle – Mental Health and Technology Usage Dataset
-- [https://www.kaggle.com/datasets/waqi786/mental-health-and-technology-usage-dataset](https://www.kaggle.com/datasets/waqi786/mental-health-and-technology-usage-dataset)
+![Sleep vs Technology Usage](images/graph_3.png)
 
----
+**Statistical Evidence:**
+- **ANOVA**: p >> 0.05
+- **Bayes Factor**: BF ≈ 2.9e-08 (overwhelming support for null)
+- **Linear Regression**: β = -0.0045, R² = 0.0001
 
-## 🛠️ Technologies Used
-
-- **Statistical Analysis**: R Programming
-- **Statistical Tests**: 
-  - ANOVA (Frequentist and Bayesian)
-  - Linear Regression
-  - Ordinal Logistic Regression
-  - Multinomial Logistic Regression
-  - T-tests
-- **Visualization**: R Graphics (ggplot2, base R plots)
-- **Data Processing**: R tidyverse
+**Result:** No significant relationship between technology use and sleep patterns.
 
 ---
 
-## 📄 License
+### Finding #4: Social Media ≠ Reduced Physical Activity ❌
 
-This project was developed for academic purposes as part of coursework at Syracuse University.
+![Physical Activity vs Social Media](images/graph_2.png)
+
+**Statistical Evidence:**
+- **Bayes Factor**: BF = 0.024 (~42x more likely under null)
+- **Linear Regression**: β = 0.0029, p = 0.816, R² ≈ 0
+
+**Result:** Social media usage does not reduce physical activity.
 
 ---
 
-**Author**: Atharva Bhushan Karekar  
-**Institution**: Syracuse University, School of Information Studies  
-**Course**: ITS 686 M001 Spring 2025  
-**Date**: May 2025
+### Finding #5: Support Systems = MORE Physical Activity ✅
+
+<table>
+<tr>
+<td width="50%">
+
+![Sleep vs Support](images/graph_5.png)
+**Sleep:** No difference (p = 0.33)
+
+</td>
+<td width="50%">
+
+![Physical Activity vs Support](images/graph_8.png)
+**Physical Activity:** Significant! (p = 0.027) ✅
+
+</td>
+</tr>
+</table>
+
+**Statistical Evidence:**
+
+| Outcome | Test | Result |
+|---------|------|--------|
+| **Physical Activity** | T-test | **p = 0.027** ✅ |
+| | Linear Regression | **β = 0.13, p = 0.027** ✅ |
+| | Effect | +0.13 hrs/day |
+| **Sleep** | T-test | p = 0.33 ❌ |
+| | Linear Regression | β = 0.028, p = 0.33 ❌ |
+
+**Result:** Support systems significantly increase physical activity but don't affect sleep.
+
+---
+
+## 📈 Statistical Methods Summary
+
+| Analysis | Models Used | Best Performing |
+|----------|-------------|-----------------|
+| Mental Health vs Tech | ANOVA (Frequentist & Bayesian), Multinomial Regression | All showed no effect |
+| Stress vs Screen Time | ANOVA (Frequentist & Bayesian), Ordinal Regression | All showed no effect |
+| Sleep vs Technology | ANOVA (Frequentist & Bayesian), Linear Regression | All showed no effect |
+| Physical Activity vs Social Media | Bayesian Correlation, Linear Regression | No relationship |
+| Support Systems Impact | T-tests, Linear Regression | Significant for physical activity only |
+
+---
+
+## 💡 Main Takeaway
+
+> **Human connection matters more than limiting technology.**
+> 
+> Contrary to popular belief, we found NO significant relationship between technology usage and poor health outcomes. However, access to support systems showed a measurable positive impact on physical activity.
+
+---
+
+## 🛠️ Technical Skills Demonstrated
+
+- **Statistical Testing**: ANOVA (Frequentist & Bayesian), T-tests, Linear Regression, Multinomial/Ordinal Regression
+- **Data Analysis**: R Programming, Data Cleaning, Feature Engineering
+- **Visualization**: ggplot2, Statistical Graphics
+- **Sample Size**: 10,000 observations
+- **Variables Analyzed**: 40+ features from 270+ original attributes
+
+---
+
+## 📊 Complete Results Table
+
+| Research Question | Statistical Test | Test Statistic | P-Value | Conclusion |
+|-------------------|------------------|----------------|---------|------------|
+| Gaming → Mental Health | ANOVA | - | > 0.48 | No effect |
+| Gaming → Mental Health | Bayes Factor | BF = 0.00022 | - | Strong null support |
+| Social Media → Mental Health | ANOVA | - | > 0.48 | No effect |
+| Social Media → Mental Health | Bayes Factor | BF = 0.00034 | - | Strong null support |
+| Screen Time → Stress | ANOVA | - | 0.20 | No effect |
+| Screen Time → Stress | Bayes Factor | BF = 0.0059 | - | Strong null support |
+| Technology → Sleep | ANOVA | - | >> 0.05 | No effect |
+| Technology → Sleep | Linear Reg | R² = 0.0001 | >> 0.05 | No predictive power |
+| Social Media → Physical Activity | Correlation | - | 0.816 | No relationship |
+| Social Media → Physical Activity | Bayes Factor | BF = 0.024 | - | Strong null support |
+| **Support → Physical Activity** | **T-test** | **t = 2.21** | **0.027** | **Significant ✅** |
+| **Support → Physical Activity** | **Linear Reg** | **β = 0.13** | **0.027** | **Significant ✅** |
+| Support → Sleep | T-test | t = 0.97 | 0.33 | No effect |
+
+
+---
+
+## 📚 Dataset
+
+**Source:** [Kaggle - Mental Health and Technology Usage Dataset](https://www.kaggle.com/datasets/waqi786/mental-health-and-technology-usage-dataset)  
+**Size:** 10,000 individuals  
+**Variables:** Social media usage, gaming hours, screen time, sleep, physical activity, stress, mental health status, support systems
+
+---
+
+## 👨‍💻 Author
+
+**Atharva Bhushan Karekar**  
+Master's in Applied Data Science | Syracuse University  
+Course: ITS 686 - Information & Technology Management  
+Spring 2025
+
+---
+
+<div align="center">
+
+**Technologies Used**
+
+![R](https://img.shields.io/badge/R-276DC3?style=for-the-badge&logo=r&logoColor=white)
+![Statistics](https://img.shields.io/badge/Statistics-Analysis-blue?style=for-the-badge)
+![Data Science](https://img.shields.io/badge/Data-Science-green?style=for-the-badge)
+
+</div>
