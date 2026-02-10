@@ -1,8 +1,7 @@
 # Analysis of the Impacts of Technology and Social Media on Mental and Physical Well-being
 
 <div align="center">
-  
-![Syracuse University](images/graph_1.png)
+
 
 **Author**: Atharva Bhushan Karekar  
 **Institution**: Syracuse University  
